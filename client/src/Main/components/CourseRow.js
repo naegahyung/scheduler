@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Popup, Message } from 'semantic-ui-react';
 
 import { rePosition } from '../main.action';
 import style from '../main.css';
@@ -42,16 +43,30 @@ class CourseRow extends Component {
         {this.renderBoxes()}
         {this.renderRoomName(this.props.classes._id)}{
         this.props.classes.sessions[this.props.day].map(c => (
-          <div 
-            draggable={true}
-            id={c._id}
-            name={this.props.index}
-            key={c._id}
-            style={style.interval5Min(getStart(c.start), parseInt(c.duration, 10))}
-            onDragEnd={this.dragEnd}
+          <Popup
+            trigger={
+              <div 
+                draggable={true}
+                id={c._id}
+                name={this.props.index}
+                key={c._id}
+                style={style.interval5Min(getStart(c.start), parseInt(c.duration, 10))}
+                onDragEnd={this.dragEnd}
+              >
+                {`${c.crs} ${c.num}`}
+              </div>
+            }
+            hideOnScroll
+            flowing
           >
-            {c.start}
-          </div>
+            <Message>
+              <Message.Header>
+                {c.title}
+              </Message.Header>
+              <div>{c.time}</div>
+              <div>{c.instructor}</div>
+            </Message>
+          </Popup>
         ))
       }</div>
     ); 
