@@ -1,0 +1,31 @@
+{
+  "name": "SchedulerWeb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon src/index.js",
+    "test": "mocha src/**/**.spec.js --watch",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "npm run start --prefix client",
+    "etl": "node src/etl"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "commander": "^2.13.0",
+    "csvtojson": "^1.1.9",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "lodash": "^4.17.5",
+    "mongoose": "^5.0.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "concurrently": "^3.5.1",
+    "cors": "^2.8.4",
+    "nodemon": "^1.14.11"
+  }
+}
