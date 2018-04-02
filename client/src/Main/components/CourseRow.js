@@ -6,8 +6,6 @@ import style from '../main.css';
 
 class CourseRow extends Component {
  
-  state = { day: "M" }
-  
   renderBoxes = () => {
     let boxes = [];
     for (let i = 0; i < 12 * 14; i++) {
@@ -30,17 +28,12 @@ class CourseRow extends Component {
   }
 
   dragEnd = (e) => {
-    console.log(Object.keys(e));
     this.props.rePosition(
       { x: e.pageX, y: e.pageY }, 
       e.currentTarget.id, 
-      this.state.day, 
+      this.props.day, 
       e.currentTarget.getAttribute('name')
     );
-  }
-
-  dragStart = (e) => {
-    console.log(e.currentTarget.getAttribute('name'));
   }
 
   render() {
@@ -48,11 +41,10 @@ class CourseRow extends Component {
       <div style={style.row}>
         {this.renderBoxes()}
         {this.renderRoomName(this.props.classes._id)}{
-        this.props.classes.sessions[this.state.day].map(c => (
+        this.props.classes.sessions[this.props.day].map(c => (
           <div 
             draggable={true}
             id={c._id}
-            onDragStart={this.dragStart}
             name={this.props.index}
             key={c._id}
             style={style.interval5Min(getStart(c.start), parseInt(c.duration, 10))}

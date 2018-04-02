@@ -9,16 +9,14 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "bulma": "^0.6.2",
     "react": "^16.2.0",
-    "react-beautiful-dnd": "^5.0.0",
     "react-dom": "^16.2.0",
     "react-dotdotdot": "^1.2.3",
     "react-redux": "^5.0.6",
     "react-scripts": "1.1.1",
     "redux": "^3.7.2",
-    "redux-saga": "^0.16.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "semantic-ui-react": "^0.79.0"
   },
   "scripts": {
     "start": "react-scripts start",
