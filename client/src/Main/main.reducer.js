@@ -15,12 +15,10 @@ export default function(state = initialState, action) {
       return { ...state, courses: action.payload };
     case MOVE_COURSE:
       const copy = JSON.parse(JSON.stringify(state.courses));
-      let { id, start, day, oldRoomIndex, newRoomIndex } = action.payload;
-      console.log(oldRoomIndex, newRoomIndex);
+      let { id, start, destination, sourceDay, oldRoomIndex, newRoomIndex } = action.payload;
       const rowToBeFixed = copy[oldRoomIndex];
-      
       let index = 0;
-      let target = rowToBeFixed.sessions[day].find((c, i) => {
+      let target = rowToBeFixed.sessions[sourceDay].find((c, i) => {
         index = i;
         return c._id === id
       });
@@ -29,8 +27,8 @@ export default function(state = initialState, action) {
       target.start = start;
       target.time = time;
 
-      copy[oldRoomIndex].sessions[day].splice(index, 1);
-      copy[newRoomIndex].sessions[day].push(target);
+      copy[oldRoomIndex].sessions[sourceDay].splice(index, 1);
+      copy[newRoomIndex].sessions[destination].push(target);
       return { ...state, courses: copy };
     default:
       return state;

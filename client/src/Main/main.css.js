@@ -1,7 +1,10 @@
-const fiveMinutes = 7; // width of 5 minute interval
-const oneHour = fiveMinutes * 12; // width of one hour interval
-const row = oneHour * 14;
-const height = 50;
+import {
+  fiveMinutes,
+  oneHour,
+  row,
+  height,
+  headerHeight,
+} from './main.constant';
 
 const style = {
   interval5Min: (index, duration) => ({
@@ -16,8 +19,8 @@ const style = {
   }),
   // each row contains hours from 8 am to 10 pm.
   box: (index, duration) => ({
-    width: fiveMinutes,
-    border: '1px solid #AAAAAA',
+    width: duration,
+    border: `1px solid #DDDDDD`,
     height,
     position: 'absolute',
     opacity: '0.5',
@@ -30,12 +33,32 @@ const style = {
   },
   roomName: {
     position: 'absolute', 
-    zIndex: '99', 
+    zIndex: '10', 
     fontWeight: 'bold', 
-    color: '#0074D9', 
-    paddingTop: '12px',
+    color: '#AAAAAA', 
+    paddingTop: '2px',
     letterSpacing: '5px'
-  }
+  },
+  header: {
+    height: headerHeight,
+    width: row,
+    textAlign: 'center',
+    position: 'relative',
+  },
+  headerChildren: (left) => ({
+    position: 'absolute',
+    left,
+    fontWeight: 'bold',
+    top: '10px',
+    fontSize: '30px'
+  }),
+  specificBox: (index, duration, color) => ({
+    width: duration,
+    border: `2px solid #${color}`,
+    height,
+    position: 'absolute',
+    left: `${index * fiveMinutes}px`,
+  }),
 };
 
 export default style;
