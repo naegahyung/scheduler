@@ -2,6 +2,7 @@ const program = require('commander');
 const mongoose = require('mongoose');
 
 require('../model/course');
+require('dotenv').config();
 const { loadCourses } = require('./course');
 
 program

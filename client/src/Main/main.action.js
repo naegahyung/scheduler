@@ -17,6 +17,7 @@ export const getAllCourses = semester => async dispatch => {
   dispatch({ type: FETCH_COURSES, payload: res.data });
 };
 
+//https://www.npmjs.com/package/react-cursor-position maybe incorporate this
 export const rePosition = (position, id, destination, sourceDay, oldRoomIndex) => {
   let padding = position.x > leftPadding2 ? leftPadding2 : leftPadding1;
   const minutes = Math.floor((position.x - padding) / fiveMinutes) * 5;
@@ -25,6 +26,6 @@ export const rePosition = (position, id, destination, sourceDay, oldRoomIndex) =
   let m = minutes % 60;
   m = m < 10 ? "0" + String(m) : String(m);
   const newStart = h + m;
-  const newRoomIndex = Math.floor((position.y - headerHeight) / height);
+  const newRoomIndex =  Math.floor((position.y - headerHeight) / height);
   return { type: MOVE_COURSE, payload: { start: newStart, id, destination, oldRoomIndex, newRoomIndex, sourceDay } };
 };

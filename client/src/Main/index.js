@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Dropdown, Segment } from 'semantic-ui-react';
-
+import { Dropdown } from 'semantic-ui-react';
+import { detect } from 'detect-browser';
 import { getAllCourses } from './main.action';
 import CourseRow from './components/CourseRow';
+import Header from './components/header';
 import {
   leftPadding1,
   leftPadding2,
-  row
 } from './main.constant';
 import style from './main.css'
 
+
 class MainPage extends Component {
 
-  state = { day_1: 'M', day_2: 'T' }
+  state = { day_1: 'M', day_2: 'T', chrome: false }
 
   code = {
     M: 'Monday',
@@ -24,7 +25,9 @@ class MainPage extends Component {
   }
 
   componentDidMount = async () => {
-    await this.props.getAllCourses('SPR18');
+    if (detect().name !== 'safari') {
+      await this.props.getAllCourses('SPR18');
+    }
   }
 
   renderCourseRows(day, alterDay, leftPosition) {
@@ -50,6 +53,16 @@ class MainPage extends Component {
     }
   }
 
+  renderClassNames() {
+    return (
+      <div style={{ paddingLeft: '10px' }}>{
+        this.props.classes.map((c, i) => (
+          <div style={style.roomName(i)}>{c}</div>
+        ))  
+      }</div>
+    )
+  }
+
   renderDropDownButton() {
     const dayOptions = [
       { key: 'M', value: 'M', text: 'Monday' },
@@ -64,49 +77,43 @@ class MainPage extends Component {
           <div>First Chart:</div>
           <Dropdown placeholder='Monday' search selection options={dayOptions} 
             onChange={this.changeDay}
-        />
+          />
         </div>
         <div>
           <div>Second Chart:</div>
           <Dropdown placeholder='Tuesday' search selection options={dayOptions.map(e => ({ ...e, value: e.value + '_2'}))} 
             onChange={this.changeDay}
-        /></div>
-
+          />
+        </div>
       </div>
     )
-  }
-
-  renderHeaderDate() {
-    return (
-      <div style={style.header}>
-        <div style={style.headerChildren(row/2)}>{this.code[this.state.day_1]}</div>
-        <div style={style.headerChildren(row + row/2)}>{this.code[this.state.day_2]}</div>
-      </div>
-    );
   }
 
   render() {
     if (this.props.courses.length > 0) {
       return (
         <div>
+          <Header day1={this.state.day_1} day2={this.state.day_2}/>
           {this.renderDropDownButton()}
-          {this.renderHeaderDate()}
+          {this.renderClassNames()}
           {this.renderCourseRows(this.state.day_1, this.state.day_2, leftPadding1)}
           {this.renderCourseRows(this.state.day_2, this.state.day_1, leftPadding2)}
         </div>
       )
     } else {
       return (
-        <div>
-          Loading
+        <div style={{ textAlign: 'center', fontSize: '15pt', marginTop: '50px' }}>
+          Please advise that Safari is currently not supported for this web application 
+          due to Safari's unique mouse-handling coordinates. Try again in Chrome. 
         </div>
       );
     }
   }
 }
 
-const mapStateToProps = ({ main }) => (
-  { courses: main.courses }
-);
+const mapStateToProps = ({ main }) => {
+  let classes = main.courses.map(e => e._id);
+  return { courses: main.courses, classes } 
+};
 
 export default connect(mapStateToProps, { getAllCourses })(MainPage);

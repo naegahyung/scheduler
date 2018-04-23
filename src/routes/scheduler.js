@@ -8,7 +8,7 @@ module.exports = app => {
     const semester = req.params.semester;
     let result = await Course.aggregate([
       {
-        "$match": { "start": { $ne: null } }
+        "$match": { start: { $ne: null }, semester }
       },
       { 
         $group: {
@@ -19,6 +19,12 @@ module.exports = app => {
     ]);
     let final = labelDays(result);
     res.send(final);
+  });
+
+  app.get('/api/crs/:semester', async (req, res) => {
+    const semester = req.params.semester;
+    let result = await Course.distinct('crs', { semester });
+    res.send(result);
   });
 };
 

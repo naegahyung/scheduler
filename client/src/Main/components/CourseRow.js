@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Popup, Message } from 'semantic-ui-react';
-
 import { rePosition } from '../main.action';
 import style from '../main.css';
 import { 
@@ -55,24 +54,18 @@ class CourseRow extends Component {
     return boxes;
   }
 
-  renderRoomName(roomName) {
-    return (
-      <div style={style.roomName}>
-        {roomName}
-      </div>
-    );
-  }
-
   dragEnd = (e) => {
-    let destination;
-    if (e.pageX > leftPadding2) {
+    let destination, x, y;
+    x = e.pageX;
+    y = e.pageY;
+    if (x > leftPadding2) {
       destination = this.state.fromFirst ? this.props.alterDay : this.props.day;
     } else {
       destination = this.state.fromFirst ? this.props.day : this.props.alterDay;
     }
     
     this.props.rePosition(
-      { x: e.pageX, y: e.pageY }, 
+      { x, y }, 
       e.currentTarget.id, 
       destination,
       e.currentTarget.getAttribute('class'),
@@ -89,8 +82,7 @@ class CourseRow extends Component {
     return (
       <div style={style.row}>
         {this.renderBoxes()}
-        {this.drawSpecificTimeFrame()}
-        {this.renderRoomName(this.props.classes._id)}{
+        {this.drawSpecificTimeFrame()}{
         this.props.classes.sessions[this.props.day].map(c => (
           <Popup
             trigger={

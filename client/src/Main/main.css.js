@@ -20,7 +20,7 @@ const style = {
   // each row contains hours from 8 am to 10 pm.
   box: (index, duration) => ({
     width: duration,
-    border: `1px solid #DDDDDD`,
+    border: `0.1px solid #DDDDDD`,
     height,
     position: 'absolute',
     opacity: '0.5',
@@ -29,16 +29,17 @@ const style = {
   row: {
     border: '1px solid black',
     height,
-    width: row
+    width: row,
+    fontSize: '12px',
   },
-  roomName: {
+  roomName: (index) => ({
     position: 'absolute', 
     zIndex: '10', 
     fontWeight: 'bold', 
-    color: '#AAAAAA', 
+    color: 'black', 
     paddingTop: '2px',
-    letterSpacing: '5px'
-  },
+    top: `${index * height + headerHeight}px`,
+  }),
   header: {
     height: headerHeight,
     width: row,
@@ -50,11 +51,11 @@ const style = {
     left,
     fontWeight: 'bold',
     top: '10px',
-    fontSize: '30px'
+    fontSize: '20px'
   }),
   specificBox: (index, duration, color) => ({
     width: duration,
-    border: `2px solid #${color}`,
+    border: `0.5px solid #${color}`,
     height,
     position: 'absolute',
     left: `${index * fiveMinutes}px`,
