@@ -10,12 +10,13 @@ const code = {
   F: 'Friday',
 };
 
-const header = ({ day1, day2 }) => {
+const header = ({ dates }) => {
   return (
-  <div style={style.header}>
-    <div style={style.headerChildren(row/2)}>{code[day1]}</div>
-    <div style={style.headerChildren(row + row/2)}>{code[day2]}</div>
-  </div>
+  <div style={style.header}>{
+    dates.map((date, i) => {
+      return <div style={style.headerChildren(i)}>{code[date]}</div> 
+    })
+  }</div>
 )};
 
 export default header;

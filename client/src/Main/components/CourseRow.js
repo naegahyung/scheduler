@@ -4,7 +4,7 @@ import { Popup, Message } from 'semantic-ui-react';
 import { rePosition } from '../main.action';
 import style from '../main.css';
 import { 
-  leftPadding2,
+  leftPadding,
   fiveMinutes,
 } from '../main.constant';
 
@@ -58,7 +58,7 @@ class CourseRow extends Component {
     let destination, x, y;
     x = e.pageX;
     y = e.pageY;
-    if (x > leftPadding2) {
+    if (x > leftPadding(1)) {
       destination = this.state.fromFirst ? this.props.alterDay : this.props.day;
     } else {
       destination = this.state.fromFirst ? this.props.day : this.props.alterDay;
@@ -75,7 +75,7 @@ class CourseRow extends Component {
   }
 
   dragStart = (e) => {
-    this.setState({ fromFirst: e.pageX > leftPadding2 ? false : true });
+    this.setState({ fromFirst: e.pageX > leftPadding(1) ? false : true });
   }
 
   render() {
@@ -116,9 +116,10 @@ class CourseRow extends Component {
   }
 };
 
-const getStart = (str) => {
-  return (parseInt(str.slice(0, 2) - 8, 10) * 60) + parseInt(str.slice(2, 4), 10);
-};
+const getStart = (str) => ( 
+  (parseInt(str.slice(0, 2) - 8, 10) * 60) + parseInt(str.slice(2, 4), 10) 
+)
+
 
 export default connect(null, { rePosition })(CourseRow);
 

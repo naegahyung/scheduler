@@ -6,8 +6,7 @@ import {
 import {
   height,
   fiveMinutes,
-  leftPadding1,
-  leftPadding2,
+  leftPadding,
   headerHeight
 } from './main.constant';
 
@@ -19,7 +18,7 @@ export const getAllCourses = semester => async dispatch => {
 
 //https://www.npmjs.com/package/react-cursor-position maybe incorporate this
 export const rePosition = (position, id, destination, sourceDay, oldRoomIndex) => {
-  let padding = position.x > leftPadding2 ? leftPadding2 : leftPadding1;
+  let padding = position.x > leftPadding(1) ? leftPadding(1) : leftPadding(0);
   const minutes = Math.floor((position.x - padding) / fiveMinutes) * 5;
   let h = Math.floor(minutes / 60) + 8;
   h = h < 10 ? "0" + String(h) : String(h);

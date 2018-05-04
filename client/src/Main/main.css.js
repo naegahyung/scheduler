@@ -34,24 +34,23 @@ const style = {
   },
   roomName: (index) => ({
     position: 'absolute', 
-    zIndex: '10', 
     fontWeight: 'bold', 
     color: 'black', 
     paddingTop: '2px',
-    top: `${index * height + headerHeight}px`,
+    top: `${index * height}px`,
   }),
   header: {
     height: headerHeight,
-    width: row,
-    textAlign: 'center',
     position: 'relative',
+    marginLeft: '150px',
   },
-  headerChildren: (left) => ({
+  headerChildren: (i) => ({
     position: 'absolute',
-    left,
     fontWeight: 'bold',
     top: '10px',
-    fontSize: '20px'
+    left: `${i === 0 ? 0 : (row + 50) * i}px`,
+    fontSize: '20px',
+    display: 'inline-block',
   }),
   specificBox: (index, duration, color) => ({
     width: duration,
@@ -60,6 +59,13 @@ const style = {
     position: 'absolute',
     left: `${index * fiveMinutes}px`,
   }),
+  classNamesBox: {
+    position: 'absolute', 
+    width: '150px', 
+    backgroundColor: '#FDFDFD', 
+    height: '100%', 
+    zIndex: 10,
+  }
 };
 
 export default style;

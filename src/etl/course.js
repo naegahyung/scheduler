@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+require('../model');
 const Course = mongoose.model('course');
 const { parseCSVFile } = require('../helpers/parser');
 
