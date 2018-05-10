@@ -127,7 +127,10 @@ class MainPage extends Component {
       }
       shownDatesModified.splice(insertIndex, 1, dayToBeModified);
     }
-    this.setState({ shownDates: shownDatesModified, filteredDates: shownDatesModified.filter(e => e !== '$') });
+    this.setState({ 
+      shownDates: shownDatesModified, 
+      filteredDates: shownDatesModified.filter(e => e !== '$') 
+    });
   }
 
   toggleGrid = (e, data) => {
@@ -171,7 +174,10 @@ class MainPage extends Component {
             <div style={{ marginLeft: `${totalMarginColumn}px` }}>
             {
               this.dayOptions.map(o => (
-                this.renderCourseRows(o.key, this.state.shownDates.filter(s => s !== '$').indexOf(o.key))
+                this.renderCourseRows(
+                  o.key, 
+                  this.state.shownDates.filter(s => s !== '$').indexOf(o.key)
+                )
               ))
             }
             </div>

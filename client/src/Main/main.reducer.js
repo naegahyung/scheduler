@@ -43,38 +43,47 @@ export default function(state = initialState, action) {
     case FETCH_CRS:
       return { ...state, crs: action.payload };
     case FILTER_CRS:
-      let filteredCrs = processFiltering(state.courses, action.payload, 'FILTER', state.excludedCrs, 'crs');
+      let filteredCrs = processFiltering(state, action.payload, 'FILTER', 'crs');
       return { ...state, filteredCourses: filteredCrs[0], excludedCrs: filteredCrs[1]};
     case ADD_CRS:
-      let addedCrs = processFiltering(state.courses, action.payload, 'ADD', state.excludedCrs, 'crs');
+      let addedCrs = processFiltering(state, action.payload, 'ADD', 'crs');
       return { ...state, filteredCourses: addedCrs[0], excludedCrs: addedCrs[1]}; 
     case FILTER_LEVEL:
-      let filteredLevel = processFiltering(state.courses, action.payload, 'FILTER', state.excludedLevel, 'grad');
+      let filteredLevel = processFiltering(state, action.payload, 'FILTER', 'grad');
       return { ...state, filteredCourses: filteredLevel[0], excludedLevel: filteredLevel[1]};
     case ADD_LEVEL:
-      let addedLevel = processFiltering(state.courses, action.payload, 'ADD', state.excludedLevel, 'grad');
+      let addedLevel = processFiltering(state, action.payload, 'ADD', 'grad');
       return { ...state, filteredCourses: addedLevel[0], excludedLevel: addedLevel[1]};  
     default:
       return state;
   }
 };
 
-const processFiltering = (courses, payload, type, exclusion, key) => {
-  const excluded = type === 'ADD' ? 
-    exclusion.filter(e => e !== payload) : 
-    exclusion.concat([ payload ]);
+const processFiltering = ({ courses, excludedCrs, excludedLevel }, payload, type, key) => {
   
-  const filteredCourses = filterCoursesBasedOnCond(courses, excluded, key);
-  return [ filteredCourses, excluded ];
+  let exCrs = excludedCrs.slice();
+  let exLv = excludedLevel.slice();
+  if (key === 'crs') {
+    exCrs = type === 'ADD' ? 
+      excludedCrs.filter(e => e !== payload) : 
+      excludedCrs.concat([ payload ]) 
+  } else {
+    exLv = type === 'ADD' ?
+      excludedLevel.filter(e => e !== payload) :
+      excludedLevel.concat([ payload ]);
+  }
+  
+  const filteredCourses = filterCoursesBasedOnCond(courses, exCrs, exLv);
+  return [ filteredCourses, key === 'crs' ? exCrs : exLv ];
 }
 
-const filterCoursesBasedOnCond = (courses, excluded, key) => {
+const filterCoursesBasedOnCond = (courses, excludedCrs, excludedLevel) => {
   const days = [ 'M', 'T', 'W', 'R', 'F' ];
   return courses.map(room => {
     let newSessions = {};
     days.forEach(d => {
       newSessions[d] = room.sessions[d].filter(e => {
-        return !excluded.includes(e[key]);
+        return !excludedCrs.includes(e.crs) && !excludedLevel.includes(e.grad);
       });
     })
     return { ...room, sessions: newSessions };
