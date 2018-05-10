@@ -2,8 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Checkbox } from 'semantic-ui-react';
 import { detect } from 'detect-browser';
-import { getAllCourses } from './main.action';
 
+import { 
+  getAllCourses, 
+  getAllCrs, 
+  filterCrs, 
+  filterLevels 
+} from './main.action';
 import OutlineBox from './components/OutlineBox';
 import CourseRow from './components/CourseRow';
 import LeftBarMenu from './components/leftBarMenu';
@@ -12,8 +17,9 @@ import {
   leftPadding,
   row,
   totalMarginColumn,
+  colorScheme
 } from './main.constant';
-import style from './main.css'
+import style from './main.css';
 
 
 class MainPage extends Component {
@@ -42,6 +48,7 @@ class MainPage extends Component {
   componentDidMount = async () => {
     if (detect().name !== 'safari') {
       await this.props.getAllCourses('SPR18');
+      await this.props.getAllCrs('SPR18');
     }
   }
 
@@ -53,17 +60,19 @@ class MainPage extends Component {
           marginLeft: '50px',
           marginRight: '50px', 
           display: 'inline-block' 
-          }}>{
-          this.props.courses.map((classes, index) => (
+          }}
+        >
+          { this.props.courses.map((classes, index) => (
             <CourseRow 
               classes={classes} 
               key={classes._id} 
               index={index} 
               day={day} 
               currentDates={this.state.shownDates.filter(e => e !== '$')} 
+              colors={this.props.colors}
             />  
-          ))
-        }</div>
+          ))}
+        </div>
       ); 
     }
   }
@@ -144,6 +153,10 @@ class MainPage extends Component {
           <LeftBarMenu 
             turnOnDay={this.turnOnDay} 
             toggleGrid={this.toggleGrid}
+            crs={this.props.crs}
+            colors={this.props.colors}
+            filterCrs={this.props.filterCrs}
+            filterLevels={this.props.filterLevels}
           />
           <div style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
             <Header dates={this.state.shownDates.filter(e => e !== '$')} />
@@ -155,13 +168,13 @@ class MainPage extends Component {
               twoTen={this.state.twoTenShown}
             />
             {this.renderClassNames()}
-              <div style={{ marginLeft: `${totalMarginColumn}px` }}>
-              {
-                this.dayOptions.map(o => (
-                  this.renderCourseRows(o.key, this.state.shownDates.filter(s => s !== '$').indexOf(o.key))
-                ))
-              }
-              </div>
+            <div style={{ marginLeft: `${totalMarginColumn}px` }}>
+            {
+              this.dayOptions.map(o => (
+                this.renderCourseRows(o.key, this.state.shownDates.filter(s => s !== '$').indexOf(o.key))
+              ))
+            }
+            </div>
           </div>
         </div>
       )
@@ -176,8 +189,15 @@ class MainPage extends Component {
   }
 }
 
-const mapStateToProps = ({ main }) => (
-  { courses: main.courses, rooms: main.rooms } 
-);
+const mapStateToProps = ({ main }) => {
+  let colors = {};
+  // main.crs is guaranteed to generate unique values only
+  main.crs.forEach((course, i) => {
+    colors[course] = colorScheme[i];
+  });
+  return { courses: main.filteredCourses, rooms: main.rooms, crs: main.crs, colors };
+};
 
-export default connect(mapStateToProps, { getAllCourses })(MainPage);
+export default connect(mapStateToProps, { 
+  getAllCourses, getAllCrs, filterCrs, filterLevels 
+})(MainPage);

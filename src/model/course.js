@@ -5,6 +5,7 @@ const courseSchema = new Schema({
   crn: String,
   crs: String,
   num: String,
+  grad: String,
   title: String,
   instructor: String,
   room: String,

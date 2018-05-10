@@ -1,12 +1,13 @@
 import React from 'react'
-import { Checkbox } from 'semantic-ui-react';
+import { Checkbox, Dropdown } from 'semantic-ui-react';
 import { push as Menu } from 'react-burger-menu';
+
 import style from '../main.css';
 import '../../app/main.css';
 
 const initialDays = [ 'M', 'T' ];
 
-const leftBarMenu = ({ turnOnDay, toggleGrid, toggleSpecificTimes }) => {
+const leftBarMenu = ({ turnOnDay, toggleGrid, filterCrs, filterLevels, crs, colors }) => {
   const dayOptions = [
     { key: 'M', text: 'Monday' },
     { key: 'T', text: 'Tuesday' },
@@ -14,6 +15,12 @@ const leftBarMenu = ({ turnOnDay, toggleGrid, toggleSpecificTimes }) => {
     { key: 'R', text: 'Thursday' },
     { key: 'F', text: 'Friday' },
   ];
+  
+  const levelOptions = [
+    { text: 'Undergrad', value: 'U' },
+    { text: 'Grad', value: 'G' }
+  ]
+
   return (
     <Menu right>
       <div style={style.leftMenuStyle}>{
@@ -54,8 +61,35 @@ const leftBarMenu = ({ turnOnDay, toggleGrid, toggleSpecificTimes }) => {
           />
         </div>
       </div>
-      <div style={style.leftMenuStyle}>
-      </div>
+      <div style={style.leftMenuStyle}>{
+        levelOptions.map(l => (
+          <div>
+            <Checkbox 
+              label={l.text}
+              name={l.value}
+              defaultChecked={true}
+              onChange={filterLevels}
+              style={{ height: '25px'}}
+            />
+          </div>
+        ))
+      }</div>
+      <div style={style.leftMenuStyle}>{
+        crs.map((course, i) => (
+          <div>
+            <Checkbox 
+              label={
+                <label style={{ paddingRight: '20px', minWidth: '120px' }}>{course}</label>
+              }
+              name={course}
+              defaultChecked={true}
+              style={{ display: 'inline-block' }}
+              onChange={filterCrs}
+            />
+            <div style={style.crsColorBox(colors[course])}/>
+          </div> 
+        ))
+      }</div>
     </Menu>
   ) 
 };

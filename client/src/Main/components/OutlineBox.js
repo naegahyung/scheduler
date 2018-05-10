@@ -35,7 +35,7 @@ class OutlineBox extends Component {
       boxes.push(
         <div 
           key={i}
-          style={style.box(i, fiveMinutes, this.props.numberOfRooms)}
+          style={style.box(i, this.props.numberOfRooms)}
         />
       );
     }

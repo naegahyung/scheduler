@@ -1,60 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Popup, Message } from 'semantic-ui-react';
+import Draggable from 'react-draggable';
 
 import OutlineBox from './OutlineBox';
 import { rePosition } from '../main.action';
 import style from '../main.css';
 import { 
   leftPadding,
-  fiveMinutes,
+  true5MinWidth,
+  height,
 } from '../main.constant';
 
 class CourseRow extends Component {
 
-  state = { fromFirst: false };
- 
-  renderBoxes = () => {
-    let boxes = [];
-    for (let i = 0; i < 12 * 14; i++) {
-      boxes.push(
-        <div 
-          key={i}
-          style={style.box(i, fiveMinutes)}
-        />
-      );
-    }
-    return boxes;
-  }
-
-  drawSpecificTimeFrame = () => {
-    let boxes = [];
-    const specifics = [
-      { section: "08:00-11:30", duration: 210, start: 0 },
-      { section: "13:35-17:05", duration: 210, start: 67 },
-      { section: "18:00-21:30", duration: 210, start: 120 },  
-      { section: "11:45-12:50", duration: 65, start: 45 },
-      { section: "17:15-18:20", duration: 65, start: 111 },
-      { section: "19:05-20:10", duration: 65, start: 133 },
-      { section: "20:20-21:25", duration: 65, start: 148 },
-    ];
-    for (let session of specifics) {
-      let { duration, section, start } = session;
-      boxes.push(
-        <div
-          key={`session_${section}`}
-          style={
-            style.specificBox(
-              start, 
-              (duration / 5) * fiveMinutes, 
-              duration === 65 ? "0074D9" : "7FDBFF"
-            )
-          }
-        />
-      )
-    }
-    return boxes;
-  }
+  state = { 
+    fromFirst: false, 
+    startPos: { x: 0, y: 0 },
+  };
 
   dragEnd = (e) => {
     let destination, x, y;
@@ -77,41 +40,55 @@ class CourseRow extends Component {
   }
 
   dragStart = (e) => {
+    console.log(this.state.startPos);
     this.setState({ fromFirst: e.pageX > leftPadding(1) ? false : true });
   }
 
   render() {
     return (
-      <div style={style.row}>{
+      <div style={style.row}>
+      {
         this.props.classes.sessions[this.props.day].map(c => (
-          <Popup
-            trigger={
-              <div 
-                draggable={true}
-                id={c._id}
-                name={this.props.index}
-                className={this.props.day}
-                key={c._id}
-                style={style.interval5Min(getStart(c.start), parseInt(c.duration, 10))}
-                onDragEnd={this.dragEnd}
-                onDragStart={this.dragStart}
+          <Draggable
+            handle='.handle'
+            grid={[3, height]}
+          > 
+            <div>
+              <Popup
+                trigger={
+                  <div 
+                    id={c._id}
+                    className='handle'
+                    name={this.props.index}
+                    key={c._id}
+                    style={
+                      style.interval5Min(
+                        getStart(c.start), 
+                        parseInt(c.duration, 10), 
+                        this.props.colors[c.crs]
+                      )
+                    }
+                  >
+                    {`${c.crs} ${c.num}`}
+                  </div>
+                }
+                hideOnScroll
+                flowing
+                on='click'
               >
-                {`${c.crs} ${c.num}`}
-              </div>
-            }
-            hideOnScroll
-            flowing
-          >
-            <Message>
-              <Message.Header>
-                {c.title}
-              </Message.Header>
-              <div>{c.time}</div>
-              <div>{c.instructor}</div>
-            </Message>
-          </Popup>
+                <Message>
+                  <Message.Header>
+                    {c.title}
+                  </Message.Header>
+                  <div>{c.time}</div>
+                  <div>{c.instructor}</div>
+                </Message>
+              </Popup>
+            </div>
+          </Draggable>
         ))
-      }</div>
+      }
+      </div>
     ); 
   }
 };

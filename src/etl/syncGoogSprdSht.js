@@ -38,9 +38,10 @@ function parseGoogleSheetData(spreadsheetId) {
     const total = result.length; 
     result.forEach(async c => {
       let course = new Course({
-        crn: c.CRN,
-        crs: c.Crs,
-        num: c.Num,
+        crn: removeWhiteSpace(c.CRN),
+        crs: removeWhiteSpace(c.Crs),
+        num: removeWhiteSpace(c.Num),
+        grad: c.grad,
         title: c['Title Short'],
         instructor: c.Instructor,
         room: c.Room,
@@ -60,5 +61,9 @@ function parseGoogleSheetData(spreadsheetId) {
     });
   });
 }
+
+const removeWhiteSpace = string => (
+  string.replace(/\s+/g, '')
+);
 
 parseGoogleSheetData('13Ohdf_1vyZJeI-YIRMY7XZWqYhdVEkMNS4Xh29YjMvU');

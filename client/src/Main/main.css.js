@@ -5,32 +5,34 @@ import {
   height,
   headerHeight,
   totalMarginColumn,
-  leftPadding
+  leftPadding,
+  true5MinWidth,
+  borderRadius,
 } from './main.constant';
 
 const style = {
-  interval5Min: (index, duration) => ({
-    width: `${fiveMinutes * duration / 5 }px`,
+  interval5Min: (index, duration, backgroundColor) => ({
+    width: `${true5MinWidth * duration / 5 }px`,
     position: 'absolute',
-    left: `${index / 5 * fiveMinutes}px`,
+    left: `${index / 5 * true5MinWidth}px`,
     height: height - 6,
-    backgroundColor: 'red',
+    backgroundColor,
     borderRadius: '5px',
-    marginTop: '3px',
-    marginBottom: '3px',
+    marginTop: '2px',
+    marginBottom: '2px',
   }),
   boxWrapper: (index) => ({
     position: 'relative',
-    left: `${row * index + 150 + totalMarginColumn * index}px`, 
+    left: `${row * index + leftPadding(0) + totalMarginColumn * index}px`, 
   }),
   // each row contains hours from 8 am to 10 pm.
-  box: (index, duration, numOfRooms) => ({
-    width: duration,
-    border: `0.1px solid #DDDDDD`,
+  box: (index, numOfRooms) => ({
+    width: fiveMinutes,
+    borderRight: `0.5px solid ${index % 12 === 0? '#111111' : '#DDDDDD'}`,
     height: height * numOfRooms,
     position: 'absolute',
     opacity: '0.5',
-    left: `${index * fiveMinutes}px`,
+    left: `${index * true5MinWidth - borderRadius}px`,
   }),
   row: {
     border: '1px solid black',
@@ -64,7 +66,7 @@ const style = {
     border: `2px solid #${color}`,
     height: height * numOfRooms,
     position: 'absolute',
-    left: `${index * fiveMinutes}px`,
+    left: `${index * true5MinWidth}px`,
   }),
   classNamesBox: (num) => ({
     position: 'absolute', 
@@ -76,7 +78,13 @@ const style = {
   leftMenuStyle: {
     padding: '20px',
     fontSize: '15px',
-  }
+  },
+  crsColorBox: backgroundColor => ({
+    width: '30px',
+    height: '20px',
+    display: 'inline-block',
+    backgroundColor,
+  })
 };
 
 export default style;

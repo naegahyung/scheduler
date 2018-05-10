@@ -14,11 +14,15 @@
     "react-burger-menu": "^2.4.4",
     "react-dom": "^16.2.0",
     "react-dotdotdot": "^1.2.3",
+    "react-draggable": "^3.0.5",
     "react-redux": "^5.0.6",
     "react-scripts": "1.1.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.79.0"
+  },
+  "devDependencies": {
+    "randomcolor": "^0.5.3"
   },
   "scripts": {
     "start": "react-scripts start",
