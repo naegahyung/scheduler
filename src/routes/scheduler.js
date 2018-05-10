@@ -26,6 +26,12 @@ module.exports = app => {
     let result = await Course.distinct('crs', { semester });
     res.send(result);
   });
+
+  app.get('/api/rooms/:semester', async (req, res) => {
+    const semester = req.params.semester;
+    let result = await Course.distinct('room', { semester });
+    res.send(result);
+  });
 };
 
 const labelDays = (data) => {

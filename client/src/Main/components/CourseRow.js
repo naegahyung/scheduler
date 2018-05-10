@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Popup, Message } from 'semantic-ui-react';
+
+import OutlineBox from './OutlineBox';
 import { rePosition } from '../main.action';
 import style from '../main.css';
 import { 
@@ -80,9 +82,7 @@ class CourseRow extends Component {
 
   render() {
     return (
-      <div style={style.row}>
-        {this.renderBoxes()}
-        {this.drawSpecificTimeFrame()}{
+      <div style={style.row}>{
         this.props.classes.sessions[this.props.day].map(c => (
           <Popup
             trigger={
@@ -118,7 +118,7 @@ class CourseRow extends Component {
 
 const getStart = (str) => ( 
   (parseInt(str.slice(0, 2) - 8, 10) * 60) + parseInt(str.slice(2, 4), 10) 
-)
+);
 
 
 export default connect(null, { rePosition })(CourseRow);

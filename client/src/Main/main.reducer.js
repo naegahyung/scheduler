@@ -12,7 +12,8 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case FETCH_COURSES:
-      return { ...state, courses: action.payload };
+      const rooms = action.payload.map(e => e._id);
+      return { ...state, courses: action.payload, rooms };
     case MOVE_COURSE:
       const copy = JSON.parse(JSON.stringify(state.courses));
       let { id, start, destination, sourceDay, oldRoomIndex, newRoomIndex } = action.payload;

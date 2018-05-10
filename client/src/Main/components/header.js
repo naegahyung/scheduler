@@ -13,9 +13,9 @@ const code = {
 const header = ({ dates }) => {
   return (
   <div style={style.header}>{
-    dates.map((date, i) => {
-      return <div style={style.headerChildren(i)}>{code[date]}</div> 
-    })
+    dates.map((date, i) => (
+      <div style={style.headerChildren(i)}>{code[date]}</div> 
+    ))
   }</div>
 )};
 

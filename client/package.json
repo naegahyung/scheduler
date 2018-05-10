@@ -11,6 +11,7 @@
     "axios": "^0.17.1",
     "detect-browser": "^2.4.0",
     "react": "^16.2.0",
+    "react-burger-menu": "^2.4.4",
     "react-dom": "^16.2.0",
     "react-dotdotdot": "^1.2.3",
     "react-redux": "^5.0.6",
