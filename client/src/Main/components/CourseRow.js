@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Course from './Course';
+import Course from './course';
 import style from '../main.css';
 
 export default ({ day, index, colors, currentDates, classes }) => (
