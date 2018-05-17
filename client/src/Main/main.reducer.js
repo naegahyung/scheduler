@@ -25,7 +25,7 @@ export default function(state = initialState, action) {
       return { ...state, courses: action.payload, rooms, filteredCourses: action.payload };
     case MOVE_COURSE:
       const { origin, destination } = action.payload;
-      let copiedCourses = JSON.parse(JSON.stringify(state.filteredCourses));
+      let copiedCourses = JSON.parse(JSON.stringify(state.courses));
       // delete course from source array
       let srcArry = copiedCourses[origin.room].sessions[origin.day];
       let target; // the target course being moved
@@ -49,11 +49,11 @@ export default function(state = initialState, action) {
       // append the course into destination array
       copiedCourses[destination.roomIndex].sessions[destination.day].push(target);
       copiedCourses[destination.roomIndex][destination.day] = true;
-      //let f = filterCoursesBasedOnCond(copiedCourses, state.excludedCrs, state.excludedLevel);
-      return { ...state, courses: copiedCourses }; //filteredCourses: f };
+
+      return { ...state, courses: copiedCourses };
     case REFRESH_FILTER:
-      let originalData = JSON.parse(JSON.stringify(state.courses));
-      let f = filterCoursesBasedOnCond(originalData, state.excludedCrs, state.excludedLevel);
+      let ogData = JSON.parse(JSON.stringify(state.courses));
+      let f = filterCoursesBasedOnCond(ogData, state.excludedCrs, state.excludedLevel);
       return { ...state, filteredCourses: f };
     case FETCH_CRS:
       return { ...state, crs: action.payload };

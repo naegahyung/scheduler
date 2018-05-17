@@ -25,7 +25,7 @@ class Course extends Component {
 
   dragEnd = (e, data) => {
 
-    //this.setState({ x: 0, y: 0 });
+    this.setState({ x: 0, y: 0 });
     let shouldBeMoved = true;
     if (typeof this.state.room === 'undefined'  || isNaN(this.state.room) || this.state.room < 0) shouldBeMoved = false;
     if (!this.state.id || !this.state.day) shouldBeMoved = false;
@@ -46,9 +46,9 @@ class Course extends Component {
       roomIndex,
     };
     if (!destData.day || destData.roomIndex < 0) shouldBeMoved = false;
-
     if (shouldBeMoved) {
       this.props.rePosition(this.state, destData);
+      this.props.applyFilter();
     } else {
       this.setState({ x: 0, y: 0 });
     }
@@ -68,11 +68,6 @@ class Course extends Component {
 
   onDrag = (e, data) => {
     this.setState({ x: data.x, y: data.y });
-  }
-
-  refreshFilter = () => {
-    this.props.applyFilter();
-    this.setState({ x: 0, y: 0 });
   }
 
   render() {
@@ -111,7 +106,6 @@ class Course extends Component {
             hideOnScroll
             flowing
             on='click'
-            onOpen={this.refreshFilter}
           >
             <Message>
               <Message.Header>

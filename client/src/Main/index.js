@@ -6,7 +6,8 @@ import {
   getAllCourses, 
   getAllCrs, 
   filterCrs, 
-  filterLevels
+  filterLevels,
+  applyFilter
 } from './main.action';
 import OutlineBox from './components/OutlineBox';
 import CourseRow from './components/courseRow';
@@ -204,5 +205,5 @@ const mapStateToProps = ({ main }) => {
 };
 
 export default connect(mapStateToProps, { 
-  getAllCourses, getAllCrs, filterCrs, filterLevels
+  getAllCourses, getAllCrs, filterCrs, filterLevels, applyFilter
 })(MainPage);
