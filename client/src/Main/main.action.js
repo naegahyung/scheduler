@@ -7,6 +7,7 @@ import {
   FILTER_CRS,
   ADD_LEVEL,
   FILTER_LEVEL,
+  REFRESH_FILTER
 } from './main.type';
 
 export const getAllCourses = semester => async dispatch => {
@@ -30,4 +31,8 @@ export const filterCrs = (e, data) => (
 
 export const filterLevels = (e, data) => (
   { type: data.checked ? ADD_LEVEL : FILTER_LEVEL, payload: data.name }
+)
+
+export const applyFilter = () => (
+  { type: REFRESH_FILTER }
 )

@@ -9,7 +9,7 @@ import {
   columnPadding, 
 } from '../main.constant';
 import style from '../main.css';
-import { rePosition } from '../main.action'; 
+import { rePosition, applyFilter } from '../main.action'; 
 
 
 class Course extends Component {
@@ -21,19 +21,11 @@ class Course extends Component {
     left: 0,
     x: 0,
     y: 0,
-    open: false,
-    dragging: true,
-    disabled: false
   }
-
-  
-  componentWillUnmount() {
-  }
-  
 
   dragEnd = (e, data) => {
 
-    this.setState({ x: 0, y: 0 });
+    //this.setState({ x: 0, y: 0 });
     let shouldBeMoved = true;
     if (typeof this.state.room === 'undefined'  || isNaN(this.state.room) || this.state.room < 0) shouldBeMoved = false;
     if (!this.state.id || !this.state.day) shouldBeMoved = false;
@@ -53,10 +45,12 @@ class Course extends Component {
       minuteOffset: offset,
       roomIndex,
     };
+    if (!destData.day || destData.roomIndex < 0) shouldBeMoved = false;
 
-    if (!destData.day) shouldBeMoved = false;
     if (shouldBeMoved) {
       this.props.rePosition(this.state, destData);
+    } else {
+      this.setState({ x: 0, y: 0 });
     }
   }
 
@@ -76,6 +70,11 @@ class Course extends Component {
     this.setState({ x: data.x, y: data.y });
   }
 
+  refreshFilter = () => {
+    this.props.applyFilter();
+    this.setState({ x: 0, y: 0 });
+  }
+
   render() {
     const { info, day, index, colors } = this.props;
     const { _id, start, duration, crs, num, title, time, instructor, } = info;
@@ -88,7 +87,6 @@ class Course extends Component {
         onStop={this.dragEnd}
         onDrag={this.onDrag}
         position={{ x: this.state.x, y: this.state.y }}
-        disabled={this.state.disabled}
       > 
         <div>
           <Popup
@@ -113,6 +111,7 @@ class Course extends Component {
             hideOnScroll
             flowing
             on='click'
+            onOpen={this.refreshFilter}
           >
             <Message>
               <Message.Header>
@@ -132,4 +131,4 @@ const getStart = (str) => (
   (parseInt(str.slice(0, 2) - 8, 10) * 60) + parseInt(str.slice(2, 4), 10) 
 );
 
-export default connect(null, { rePosition })(Course);
+export default connect(null, { rePosition, applyFilter })(Course);

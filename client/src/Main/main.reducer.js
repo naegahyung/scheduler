@@ -6,6 +6,7 @@ import {
   ADD_CRS,
   FILTER_LEVEL,
   ADD_LEVEL, 
+  REFRESH_FILTER,
 } from './main.type';
 
 const initialState = {
@@ -48,9 +49,12 @@ export default function(state = initialState, action) {
       // append the course into destination array
       copiedCourses[destination.roomIndex].sessions[destination.day].push(target);
       copiedCourses[destination.roomIndex][destination.day] = true;
-
-      let f = filterCoursesBasedOnCond(copiedCourses, state.excludedCrs, state.excludedLevel);
-      return { ...state, courses: copiedCourses, filteredCourses: f };
+      //let f = filterCoursesBasedOnCond(copiedCourses, state.excludedCrs, state.excludedLevel);
+      return { ...state, courses: copiedCourses }; //filteredCourses: f };
+    case REFRESH_FILTER:
+      let originalData = JSON.parse(JSON.stringify(state.courses));
+      let f = filterCoursesBasedOnCond(originalData, state.excludedCrs, state.excludedLevel);
+      return { ...state, filteredCourses: f };
     case FETCH_CRS:
       return { ...state, crs: action.payload };
     case FILTER_CRS:
