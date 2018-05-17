@@ -9,7 +9,7 @@ import {
   filterLevels
 } from './main.action';
 import OutlineBox from './components/OutlineBox';
-import CourseRow from './components/courseRow';
+import CourseRow from './components/CourseRow';
 import LeftBarMenu from './components/leftBarMenu';
 import Header from './components/header';
 import {
