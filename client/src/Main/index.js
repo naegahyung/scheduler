@@ -1,30 +1,27 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Checkbox } from 'semantic-ui-react';
 import { detect } from 'detect-browser';
 
 import { 
   getAllCourses, 
   getAllCrs, 
   filterCrs, 
-  filterLevels 
+  filterLevels
 } from './main.action';
 import OutlineBox from './components/OutlineBox';
-import CourseRow from './components/CourseRow';
+import CourseRow from './components/courseRow';
 import LeftBarMenu from './components/leftBarMenu';
 import Header from './components/header';
 import {
-  leftPadding,
-  row,
   totalMarginColumn,
-  colorScheme
+  colorScheme,
 } from './main.constant';
 import style from './main.css';
 
 
 class MainPage extends Component {
 
-  state = { day_1: 'M', day_2: 'T', chrome: false,
+  state = {
     shownDates: [ 'M', 'T', '$', '$', '$' ],
     filteredDates: [ 'M', 'T' ],
     'M': true,
@@ -46,7 +43,7 @@ class MainPage extends Component {
   ];
 
   componentDidMount = async () => {
-    if (detect().name !== 'safari') {
+    if (detect().name !== 'd') {
       await this.props.getAllCourses('SPR18');
       await this.props.getAllCrs('SPR18');
     }
@@ -57,19 +54,21 @@ class MainPage extends Component {
       return (
         <div style={{ 
           position: 'relative',
-          marginLeft: '50px',
-          marginRight: '50px', 
+          marginLeft: totalMarginColumn/2,
+          marginRight: totalMarginColumn/2, 
           display: 'inline-block' 
           }}
+          key={`daycolumn_${day}`}
         >
-          { this.props.courses.map((classes, index) => (
+          { this.props.courses.map((classes, i) => (
             <CourseRow 
               classes={classes} 
               key={classes._id} 
-              index={index} 
-              day={day} 
+              day={day}
+              room={classes._id} 
               currentDates={this.state.shownDates.filter(e => e !== '$')} 
               colors={this.props.colors}
+              index={i}
             />  
           ))}
         </div>
@@ -94,7 +93,7 @@ class MainPage extends Component {
     return (
       <div style={style.classNamesBox(this.props.rooms.length)}>{
         this.props.rooms.map((c, i) => (
-          <div style={style.roomName(i)}>{c}</div>
+          <div style={style.roomName(i)} key={`classname_${i}`}>{c}</div>
         ))  
       }</div>
     )
@@ -161,6 +160,7 @@ class MainPage extends Component {
             filterCrs={this.props.filterCrs}
             filterLevels={this.props.filterLevels}
           />
+          {this.renderClassNames()}
           <div style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
             <Header dates={this.state.shownDates.filter(e => e !== '$')} />
             <OutlineBox 
@@ -170,7 +170,6 @@ class MainPage extends Component {
               sixFive={this.state.sixFiveShown}
               twoTen={this.state.twoTenShown}
             />
-            {this.renderClassNames()}
             <div style={{ marginLeft: `${totalMarginColumn}px` }}>
             {
               this.dayOptions.map(o => (
@@ -205,5 +204,5 @@ const mapStateToProps = ({ main }) => {
 };
 
 export default connect(mapStateToProps, { 
-  getAllCourses, getAllCrs, filterCrs, filterLevels 
+  getAllCourses, getAllCrs, filterCrs, filterLevels
 })(MainPage);

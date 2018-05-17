@@ -1,6 +1,5 @@
 import {
   fiveMinutes,
-  oneHour,
   row,
   height,
   headerHeight,
@@ -20,6 +19,7 @@ const style = {
     borderRadius: '5px',
     marginTop: '2px',
     marginBottom: '2px',
+    cursor: 'move',
   }),
   boxWrapper: (index) => ({
     position: 'relative',
@@ -28,7 +28,7 @@ const style = {
   // each row contains hours from 8 am to 10 pm.
   box: (index, numOfRooms) => ({
     width: fiveMinutes,
-    borderRight: `0.5px solid ${index % 12 === 0? '#111111' : '#DDDDDD'}`,
+    borderLeft: `0.5px solid ${index % 12 === 0? '#111111' : '#DDDDDD'}`,
     height: height * numOfRooms,
     position: 'absolute',
     opacity: '0.5',
@@ -36,6 +36,8 @@ const style = {
   }),
   row: {
     border: '1px solid black',
+    borderRight: 'hidden',
+    borderLeft: 'hidden',
     height,
     width: row,
     fontSize: '12px',
@@ -51,7 +53,7 @@ const style = {
   header: {
     height: headerHeight,
     position: 'relative',
-    marginLeft: '150px',
+    marginLeft: `${150 + true5MinWidth}px`,
   },
   headerChildren: (i) => ({
     position: 'absolute',
@@ -70,10 +72,11 @@ const style = {
   }),
   classNamesBox: (num) => ({
     position: 'absolute', 
-    width: '150px', 
+    width: `150px`, 
     backgroundColor: '#FDFDFD', 
     height: height * num, 
     zIndex: 10,
+    top: headerHeight
   }),
   leftMenuStyle: {
     padding: '20px',

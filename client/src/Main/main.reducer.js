@@ -22,24 +22,35 @@ export default function(state = initialState, action) {
     case FETCH_COURSES:
       const rooms = action.payload.map(e => e._id);
       return { ...state, courses: action.payload, rooms, filteredCourses: action.payload };
-      /*
     case MOVE_COURSE:
-      const copy = JSON.parse(JSON.stringify(state.courses));
-      let { id, start, destination, sourceDay, oldRoomIndex, newRoomIndex } = action.payload;
-      const rowToBeFixed = copy[oldRoomIndex];
-      let index = 0;
-      let target = rowToBeFixed.sessions[sourceDay].find((c, i) => {
-        index = i;
-        return c._id === id
+      const { origin, destination } = action.payload;
+      let copiedCourses = JSON.parse(JSON.stringify(state.filteredCourses));
+      // delete course from source array
+      let srcArry = copiedCourses[origin.room].sessions[origin.day];
+      let target; // the target course being moved
+      srcArry = srcArry.filter(e => {
+        let condition = e._id !== origin.id;
+        if (!condition) {
+          target = e;
+        }
+        return condition;
       });
+      copiedCourses[origin.room][origin.day] = srcArry.length !== 0;
+      copiedCourses[origin.room].sessions[origin.day] = srcArry;
+      // modify information about the target
+      let newTime = redefineTimeFrame(destination.minuteOffset/3 * 5, target.duration);
+      target.time = newTime;
+      target.start = newTime.substring(0, 4);
+      target.end = newTime.substring(5, 9);
+      target.day = target.day.replace(origin.day, destination.day);
+      target.room = copiedCourses[destination.roomIndex]._id;
 
-      let time = redefineTimeFrame(start, target.duration);
-      target.start = start;
-      target.time = time;
+      // append the course into destination array
+      copiedCourses[destination.roomIndex].sessions[destination.day].push(target);
+      copiedCourses[destination.roomIndex][destination.day] = true;
 
-      copy[oldRoomIndex].sessions[sourceDay].splice(index, 1);
-      copy[newRoomIndex].sessions[destination].push(target);
-      return { ...state, courses: copy };*/
+      let f = filterCoursesBasedOnCond(copiedCourses, state.excludedCrs, state.excludedLevel);
+      return { ...state, courses: copiedCourses, filteredCourses: f };
     case FETCH_CRS:
       return { ...state, crs: action.payload };
     case FILTER_CRS:
@@ -90,14 +101,17 @@ const filterCoursesBasedOnCond = (courses, excludedCrs, excludedLevel) => {
   });
 }
 
+const redefineTimeFrame = (offset, duration) => {
+  let startMin = offset % 60;
+  let startHr = 8 + Math.floor(offset / 60);
 
-
-// end time is not correct. Fix it.
-const redefineTimeFrame = (start, duration) => {
-  let endHour = Math.floor(duration / 60);
-  let minute = (duration % 60) + parseInt(start.slice(2, 4), 10);
-  endHour = endHour + Math.floor(minute / 60) + parseInt(start.slice(0, 2), 10);
-  let endMinute = minute % 60;
-
-  return `${start}-${String(endHour) + String(endMinute)}`;
+  let addedMin = duration + startMin;
+  let endMin = addedMin % 60;
+  let ovf = Math.floor(addedMin / 60);
+  let endHr = startHr + ovf;
+  return `${formatToString(startHr)}${formatToString(startMin)}-${formatToString(endHr)}${formatToString(endMin)}`; 
 };
+
+const formatToString = num => (
+  num < 10 ? '0' + String(num) : String(num)
+);

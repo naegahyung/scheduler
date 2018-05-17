@@ -1,6 +1,5 @@
 import React from 'react'
 import style from '../main.css';
-import { row } from '../main.constant';
 
 const code = {
   M: 'Monday',
@@ -14,7 +13,7 @@ const header = ({ dates }) => {
   return (
   <div style={style.header}>{
     dates.map((date, i) => (
-      <div style={style.headerChildren(i)}>{code[date]}</div> 
+      <div style={style.headerChildren(i)} key={`header_${date}`}>{code[date]}</div> 
     ))
   }</div>
 )};

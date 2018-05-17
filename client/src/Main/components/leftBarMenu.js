@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checkbox, Dropdown } from 'semantic-ui-react';
+import { Checkbox } from 'semantic-ui-react';
 import { push as Menu } from 'react-burger-menu';
 
 import style from '../main.css';
@@ -24,8 +24,8 @@ const leftBarMenu = ({ turnOnDay, toggleGrid, filterCrs, filterLevels, crs, colo
   return (
     <Menu right>
       <div style={style.leftMenuStyle}>{
-      dayOptions.map(o => (
-        <div>
+      dayOptions.map((o, i) => (
+        <div key={`dayoption_${i}`}>
           <Checkbox 
             label={o.text} 
             id={o.key} 
@@ -62,8 +62,8 @@ const leftBarMenu = ({ turnOnDay, toggleGrid, filterCrs, filterLevels, crs, colo
         </div>
       </div>
       <div style={style.leftMenuStyle}>{
-        levelOptions.map(l => (
-          <div>
+        levelOptions.map((l, i) => (
+          <div key={`leveloption_${i}`}>
             <Checkbox 
               label={l.text}
               name={l.value}
@@ -76,7 +76,7 @@ const leftBarMenu = ({ turnOnDay, toggleGrid, filterCrs, filterLevels, crs, colo
       }</div>
       <div style={style.leftMenuStyle}>{
         crs.map((course, i) => (
-          <div>
+          <div key={`crs_${i}`}>
             <Checkbox 
               label={
                 <label style={{ paddingRight: '20px', minWidth: '120px' }}>{course}</label>

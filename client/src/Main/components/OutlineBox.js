@@ -3,8 +3,6 @@ import React, { Component } from 'react'
 import style from '../main.css';
 import {
   fiveMinutes,
-  row,
-  leftPadding
 } from '../main.constant';
 
 class OutlineBox extends Component {
@@ -31,7 +29,7 @@ class OutlineBox extends Component {
 
   renderBoxes = () => {
     let boxes = [];
-    for (let i = 0; i < 12 * 14; i++) {
+    for (let i = 0; i < 12 * 14 + 1; i++) {
       boxes.push(
         <div 
           key={i}
@@ -46,7 +44,7 @@ class OutlineBox extends Component {
     let boxes = [];
     for (let i = 0; i < this.props.dayIndexes; i++) {
       boxes.push(
-        <div style={style.boxWrapper(i)}>{func()}</div> 
+        <div style={style.boxWrapper(i)} key={`grid_${i}`}>{func()}</div> 
       );
     }
     return boxes;
