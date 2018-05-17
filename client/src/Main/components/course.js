@@ -28,11 +28,12 @@ class Course extends Component {
 
   
   componentWillUnmount() {
-    console.log("Yo");
   }
   
 
   dragEnd = (e, data) => {
+
+    this.setState({ x: 0, y: 0 });
     let shouldBeMoved = true;
     if (typeof this.state.room === 'undefined'  || isNaN(this.state.room) || this.state.room < 0) shouldBeMoved = false;
     if (!this.state.id || !this.state.day) shouldBeMoved = false;
@@ -56,7 +57,6 @@ class Course extends Component {
     if (!destData.day) shouldBeMoved = false;
     if (shouldBeMoved) {
       this.props.rePosition(this.state, destData);
-      this.setState({ x: 0, y: 0 });
     }
   }
 
