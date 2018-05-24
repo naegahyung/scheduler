@@ -8,10 +8,16 @@ const { organizeData } = require('../helpers/parser');
 
 const Course = mongoose.model('course');
 
+const key = {
+  "private_key": process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+  "client_email": process.env.CLIENT_EMAIL
+}
+
+
 const jwtClient = new google.auth.JWT(
-  process.env.CLIENT_EMAIL,
+  key.client_email,
   null,
-  process.env.PRIVATE_KEY,
+  key.private_key,
   ['https://www.googleapis.com/auth/spreadsheets']
 );
 
@@ -53,7 +59,6 @@ function parseGoogleSheetData(spreadsheetId) {
       spreadsheetId,
       range: 'A1:Q175'
     }, async function (err, response) {
-      console.log(err, response);
       if (err) reject('The API returned an error: ' + err);
       let values = response.data.values.map(v => {
         return Object.assign({}, v);
