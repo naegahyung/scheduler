@@ -77,9 +77,7 @@ module.exports = app => {
       newElement[timeIndex] = time;
       newElement[dayIndex] = day;
       newElement[roomIndex] = room;
-      console.log(newElement);
       values.splice(index, 1, newElement);
-      
     });
 
     await saveData(req.params.spreadsheetId, { values });
