@@ -46,6 +46,8 @@ function saveData(spreadsheetId, body) {
 }
 
 function parseGoogleSheetData(spreadsheetId) {
+  console.log(jwtClient);
+  console.log(process.env);
   return new Promise(function(resolve, reject) {
     let sheets = google.sheets('v4');
     sheets.spreadsheets.values.get({
