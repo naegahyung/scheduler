@@ -65,22 +65,24 @@ module.exports = app => {
     const roomIndex = header.indexOf('Room');
     const dayIndex = header.indexOf('Day');
 
-    let final = [];
     Object.keys(changes).forEach(key => {
       let { crn, crs, num, time, day, room } = changes[key];
-      values.forEach((row, i) => {
-        let update = [ ...row ];
-        if (row[CRNIndex] === crn 
-          && row[crsIndex] === crs
-          && row[numIndex] === num) {
-            update[timeIndex] = time;
-            update[dayIndex] = day;
-            update[roomIndex] = room;
-          }
-        final.push(update);
-      });
+      let index = values.findIndex(e => {
+        return e[CRNIndex] === crn && e[crsIndex] === crs && e[numIndex] === num;
+      })
+      if (index === -1) {
+        return res.status(500).send('Record not found');
+      } 
+      let newElement = values[index];
+      newElement[timeIndex] = time;
+      newElement[dayIndex] = day;
+      newElement[roomIndex] = room;
+      console.log(newElement);
+      values.splice(index, 1, newElement);
+      
     });
-    await saveData(req.params.spreadsheetId, { values: final });
+
+    await saveData(req.params.spreadsheetId, { values });
     
     const status = await parseGoogleSheetData(req.params.spreadsheetId);
     const semester = req.params.semester;
