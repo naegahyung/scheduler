@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { detect } from 'detect-browser';
+import { Loader } from 'semantic-ui-react'
 
 import { 
   getAllCourses, 
@@ -190,10 +191,9 @@ class MainPage extends Component {
       )
     } else {
       return (
-        <div style={{ textAlign: 'center', fontSize: '15pt', marginTop: '50px' }}>
-          Please be advised that Safari is currently not supported for this web application 
-          due to Safari's unique mouse-handling coordinates. Try again in Chrome. 
-        </div>
+        <Loader active inline='centered' style={{ top: '300px' }} size='big'>
+        Data are being fetched...
+        </Loader>
       );
     }
   }
