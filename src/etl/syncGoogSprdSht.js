@@ -9,9 +9,9 @@ const { organizeData } = require('../helpers/parser');
 const Course = mongoose.model('course');
 
 const jwtClient = new google.auth.JWT(
-  process.env.client_email,
+  process.env.CLIENT_EMAIL,
   null,
-  process.env.private_key,
+  process.env.PRIVATE_KEY,
   ['https://www.googleapis.com/auth/spreadsheets']
 );
 
@@ -22,9 +22,9 @@ function getData(spreadsheetId) {
       auth: jwtClient,
       spreadsheetId,
       range: 'A1:Q175'
-    }, async function (err, { status, data }) {
+    }, async function (err, response) {
       if (err) reject('The API returned an error: ' + err);
-      resolve(data);
+      resolve(response.data);
     });
   })
 }
@@ -46,17 +46,16 @@ function saveData(spreadsheetId, body) {
 }
 
 function parseGoogleSheetData(spreadsheetId) {
-  console.log(jwtClient);
-  console.log(process.env);
   return new Promise(function(resolve, reject) {
     let sheets = google.sheets('v4');
     sheets.spreadsheets.values.get({
       auth: jwtClient,
       spreadsheetId,
       range: 'A1:Q175'
-    }, async function (err, { status, data }) {
+    }, async function (err, response) {
+      console.log(err, response);
       if (err) reject('The API returned an error: ' + err);
-      let values = data.values.map(v => {
+      let values = response.data.values.map(v => {
         return Object.assign({}, v);
       });
 
@@ -89,7 +88,7 @@ function parseGoogleSheetData(spreadsheetId) {
         console.log(`Done: ${counter}-${total}`);
         if (counter === total) {
           console.log(`Loading data from Google Sheet is successfully complete!`);
-          resolve(status);
+          resolve(response.status);
         }
       });
     });
