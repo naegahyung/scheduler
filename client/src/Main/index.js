@@ -7,12 +7,12 @@ import {
   getAllCrs, 
   filterCrs, 
   filterLevels,
-  applyFilter
 } from './main.action';
 import OutlineBox from './components/OutlineBox';
 import CourseRow from './components/courseRow';
 import LeftBarMenu from './components/leftBarMenu';
 import Header from './components/header';
+import Controls from './components/Controls';
 import {
   totalMarginColumn,
   colorScheme,
@@ -153,6 +153,10 @@ class MainPage extends Component {
     if (this.props.courses.length > 0) {
       return (
         <div>
+          <Controls
+            menuStyle={style.menusBackground}
+            changes={this.props.changes}
+          />
           <LeftBarMenu 
             turnOnDay={this.turnOnDay} 
             toggleGrid={this.toggleGrid}
@@ -201,9 +205,14 @@ const mapStateToProps = ({ main }) => {
   main.crs.forEach((course, i) => {
     colors[course] = colorScheme[i];
   });
-  return { courses: main.filteredCourses, rooms: main.rooms, crs: main.crs, colors };
+  return { 
+    courses: main.filteredCourses, 
+    rooms: main.rooms, 
+    crs: main.crs, colors,
+    changes: main.changes, 
+  };
 };
 
 export default connect(mapStateToProps, { 
-  getAllCourses, getAllCrs, filterCrs, filterLevels, applyFilter
+  getAllCourses, getAllCrs, filterCrs, filterLevels,
 })(MainPage);

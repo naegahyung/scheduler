@@ -87,7 +87,13 @@ const style = {
     height: '20px',
     display: 'inline-block',
     backgroundColor,
-  })
+  }),
+  menusBackground: {
+    position: 'absolute', 
+    right: '0px', 
+    zIndex: '10', 
+    height: '20px',
+  },
 };
 
 export default style;

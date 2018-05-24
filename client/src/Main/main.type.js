@@ -6,3 +6,5 @@ export const FILTER_CRS = 'filterCorrespondingCrsCourses';
 export const ADD_LEVEL = 'addBackGradOrUndergrad';
 export const FILTER_LEVEL = 'filterByEitherGradOrUndergrad';
 export const REFRESH_FILTER = 'refreshFilter';
+export const RELOAD_DATA = 'reloadDataFromGoogleSheet'; 
+export const SAVE_DATA = 'saveDataToGoogleSheet';

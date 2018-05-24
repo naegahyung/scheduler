@@ -7,6 +7,8 @@ import {
   FILTER_LEVEL,
   ADD_LEVEL, 
   REFRESH_FILTER,
+  RELOAD_DATA,
+  SAVE_DATA,
 } from './main.type';
 
 const initialState = {
@@ -16,6 +18,8 @@ const initialState = {
   crs: [],
   excludedCrs: [],
   excludedLevel: [],
+  changes: {},
+  currentSemester: '',
 };
 
 export default function(state = initialState, action) {
@@ -23,6 +27,10 @@ export default function(state = initialState, action) {
     case FETCH_COURSES:
       const rooms = action.payload.map(e => e._id);
       return { ...state, courses: action.payload, rooms, filteredCourses: action.payload };
+    case RELOAD_DATA:
+      return { ...state, courses: action.payload };
+    case SAVE_DATA:
+      return { ...state, course: action.payload };
     case MOVE_COURSE:
       const { origin, destination } = action.payload;
       let copiedCourses = JSON.parse(JSON.stringify(state.courses));
@@ -46,11 +54,14 @@ export default function(state = initialState, action) {
       target.day = target.day.replace(origin.day, destination.day);
       target.room = copiedCourses[destination.roomIndex]._id;
 
+      let changes = { ...state.changes };
+      changes[target._id] = target;
+
       // append the course into destination array
       copiedCourses[destination.roomIndex].sessions[destination.day].push(target);
       copiedCourses[destination.roomIndex][destination.day] = true;
 
-      return { ...state, courses: copiedCourses };
+      return { ...state, courses: copiedCourses, changes };
     case REFRESH_FILTER:
       let ogData = JSON.parse(JSON.stringify(state.courses));
       let f = filterCoursesBasedOnCond(ogData, state.excludedCrs, state.excludedLevel);

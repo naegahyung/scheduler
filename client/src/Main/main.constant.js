@@ -6,7 +6,7 @@ export const row = oneHour * 14;
 export const height = 20;
 export const headerHeight = 40;
 export const leftPadding = (index) => ( index * 450 + 150 + fiveMinutes );
-export const totalMarginColumn = 102;
+export const totalMarginColumn = true5MinWidth * 34;
 export const columnPadding = row + totalMarginColumn;
 export const colorScheme = [
   "#dac1ff", "#d84e57", "#cc7547", "#375f96", 

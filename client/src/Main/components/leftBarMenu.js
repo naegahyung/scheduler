@@ -7,7 +7,7 @@ import '../../app/main.css';
 
 const initialDays = [ 'M', 'T' ];
 
-const leftBarMenu = ({ turnOnDay, toggleGrid, filterCrs, filterLevels, crs, colors }) => {
+const leftBarMenu = ({ turnOnDay, toggleGrid, filterCrs, filterLevels, crs, colors, reloadData }) => {
   const dayOptions = [
     { key: 'M', text: 'Monday' },
     { key: 'T', text: 'Tuesday' },
@@ -22,7 +22,7 @@ const leftBarMenu = ({ turnOnDay, toggleGrid, filterCrs, filterLevels, crs, colo
   ]
 
   return (
-    <Menu right>
+    <Menu left>
       <div style={style.leftMenuStyle}>{
       dayOptions.map((o, i) => (
         <div key={`dayoption_${i}`}>

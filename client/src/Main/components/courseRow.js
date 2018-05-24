@@ -17,7 +17,6 @@ export default ({ day, index, colors, currentDates, classes }) => (
         index={index} 
         colors={colors}
         currentDates={currentDates} 
-        position={{ x: 0, y: 0 }}
       />
     ))
   }

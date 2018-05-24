@@ -7,12 +7,14 @@ import {
   FILTER_CRS,
   ADD_LEVEL,
   FILTER_LEVEL,
-  REFRESH_FILTER
+  REFRESH_FILTER,
+  RELOAD_DATA,
+  SAVE_DATA,
 } from './main.type';
 
 export const getAllCourses = semester => async dispatch => {
   // semester follows the format SPR18 SSSYY
-  const res = await axios.get(`/api/courses/${semester}`);
+  const res = await axios.get(`/api/${semester}/courses`);
   dispatch({ type: FETCH_COURSES, payload: res.data });
 };
 
@@ -21,7 +23,7 @@ export const rePosition = (origin, destination) => (
 );
 
 export const getAllCrs = semester => async dispatch => {
-  const res = await axios.get(`/api/crs/${semester}`);
+  const res = await axios.get(`/api/${semester}/crs`);
   dispatch({ type: FETCH_CRS, payload: res.data });
 }
 
@@ -36,3 +38,13 @@ export const filterLevels = (e, data) => (
 export const applyFilter = () => (
   { type: REFRESH_FILTER }
 )
+
+export const syncGoogleSheetData = (semester, spreadsheetId) => async dispatch => {
+  const res = await axios.get(`/api/${semester}/${spreadsheetId}/syncData`);
+  dispatch({ type: RELOAD_DATA, payload: res.data });
+}
+
+export const saveData = (semester, spreadsheetId, changes) => async dispatch => {
+  const res = await axios.put(`/api/${semester}/${spreadsheetId}/saveData`, { changes });
+  dispatch({ type: SAVE_DATA, payload: res.data });
+}

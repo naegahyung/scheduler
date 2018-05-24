@@ -45,7 +45,9 @@ class Course extends Component {
       minuteOffset: offset,
       roomIndex,
     };
-    if (!destData.day || destData.roomIndex < 0) shouldBeMoved = false;
+
+    if (!destData.day || destData.roomIndex < 0 || destData.roomIndex >= this.props.roomsLength) shouldBeMoved = false;
+    
     if (shouldBeMoved) {
       this.props.rePosition(this.state, destData);
       this.props.applyFilter();
@@ -125,4 +127,8 @@ const getStart = (str) => (
   (parseInt(str.slice(0, 2) - 8, 10) * 60) + parseInt(str.slice(2, 4), 10) 
 );
 
-export default connect(null, { rePosition, applyFilter })(Course);
+const mapStateToProps = ({ main }) => {
+  return { roomsLength: main.rooms.length }
+}
+
+export default connect(mapStateToProps, { rePosition, applyFilter })(Course);
