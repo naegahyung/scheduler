@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 const { google } = require('googleapis');
 
 require('../model');
-const privateKey = require('../assets/client_secret.json');
+//const privateKey = require('../assets/client_secret.json');
 const { organizeData } = require('../helpers/parser');
 
 const Course = mongoose.model('course');
 
 const jwtClient = new google.auth.JWT(
-  privateKey.client_email,
+  process.env.client_email,
   null,
-  privateKey.private_key,
+  process.env.private_key,
   ['https://www.googleapis.com/auth/spreadsheets']
 );
 
